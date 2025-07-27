@@ -1,16 +1,29 @@
-const socket = io();
+let socket;
+let username = '';
 
-socket.on('message', function(msg) {
-    const li = document.createElement('li');
-    li.textContent = msg;
-    document.getElementById('messages').appendChild(li);
-});
+function registerUser() {
+    username = document.getElementById('username').value.trim();
+    if (username !== '') {
+        document.getElementById('usernameSection').style.display = 'none';
+        document.getElementById('chatSection').style.display = 'block';
+
+        socket = io();
+
+        socket.on('message', function(data) {
+            const li = document.createElement('li');
+            li.textContent = data;
+            document.getElementById('messages').appendChild(li);
+        });
+
+        socket.emit('message', '${username} joined the chat');
+    }
+}
 
 function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
     if (message !== '') {
-        socket.send(message);
+        socket.send('${username}: ${message}');
         input.value = '';
     }
 }
