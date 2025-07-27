@@ -15,7 +15,7 @@ function registerUser() {
             document.getElementById('messages').appendChild(li);
         });
 
-        socket.emit('message', '${username} joined the chat');
+        socket.emit('message', username + ' joined the chat');
     }
 }
 
@@ -23,7 +23,7 @@ function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
     if (message !== '') {
-        socket.send('${username}: ${message}');
+    socket.emit(username + ': ' + message);
         input.value = '';
     }
 }
